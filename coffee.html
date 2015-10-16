@@ -49,10 +49,13 @@
 
     // Set these 3 variables to their DOM elements
 
-$('#coffee-image').attr('src', 'static/coffee_beans.jpg');
-var myRevenueMessage = $('message');
+var drinksOrdered = [];
 
-function changeCoffeeImage() {
+$('#coffee-image').attr('src', 'static/coffee_beans.jpg');
+
+function changeCoffeeImage(drinkType) {
+    drinksOrdered.push(drinkType);
+    console.log(drinksOrdered);
     $("#coffee-image").attr('src', 'static/coffee_machine.jpg')
     setTimeout(function(){
         $("#coffee-image").attr('src', 'static/coffee_mug.jpg');
@@ -60,10 +63,24 @@ function changeCoffeeImage() {
     setTimeout(function(){
         $("#coffee-image").attr('src', 'static/coffee_beans.jpg');
     }, 1500);
+    revenue();
 }
 
 
-$("#coffee-image").on("click", changeCoffeeImage);
+function revenue() {
+      var dailyRevenue = 0;
+      for (i = 0; i < drinksOrdered.length; i++) {
+          dailyRevenue += prices[drinksOrdered[i]];
+      }
+      console.log(dailyRevenue);
+      $('#revenue').html('$' + dailyRevenue.toFixed(2));
+
+  }
+
+$("#coffee-image").on("click", (function () { return changeCoffeeImage('brew');}))
+$("#espresso").on("click", (function () { return changeCoffeeImage('espresso');}))
+$("#latte").on("click", (function () { return changeCoffeeImage('latte');}))
+$("#hot-chocolate").on("click", (function () { return changeCoffeeImage('hot chocolate');}))
 
 
     // use this dictionary in further study step
